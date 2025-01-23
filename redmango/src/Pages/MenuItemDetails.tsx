@@ -1,5 +1,5 @@
 import React from "react";
-import { menuItemModel } from "../../../../Interfaces";
+import { menuItemModel } from "../Interfaces";
 
 interface Props {
   menuItem: menuItemModel;
