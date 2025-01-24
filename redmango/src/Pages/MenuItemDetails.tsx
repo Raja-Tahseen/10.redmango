@@ -2,11 +2,22 @@ import React from "react";
 import { menuItemModel } from "../Interfaces";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetMenuItemByIdQuery } from  "../Apis/menuItemApi";
+import { useState } from "react";
 
 function MenuItemDetails() {
   const {menuItemId} = useParams();
   const {data,isLoading} = useGetMenuItemByIdQuery(menuItemId);
   const navigate = useNavigate();
+  const [quantity, setQuantity] = useState(1);
+
+  const handleQuantity = (counter: number) => {
+    let newQuantity = quantity + counter;
+    if (newQuantity == 0) {
+      newQuantity = 1;
+    }
+    setQuantity(newQuantity);
+    return;
+  }
 
   return (
     <div className="container pt-4 pt-md-5">
@@ -39,12 +50,16 @@ function MenuItemDetails() {
             className="pb-2  p-3"
             style={{ border: "1px solid #333", borderRadius: "30px" }}
           >
-            <i
+            <i onClick={() => {
+              handleQuantity(-1);
+            }}
               className="bi bi-dash p-1"
-              style={{ fontSize: "25px", cursor: "pointer" }}
+              style={{ fontSize: "25px", cursor: "pointer" }} 
             ></i>
-            <span className="h3 mt-3 px-3">XX</span>
-            <i
+            <span className="h3 mt-3 px-3">{quantity}</span>
+            <i onClick={() => {
+                  handleQuantity(+1);
+                }}
               className="bi bi-plus p-1"
               style={{ fontSize: "25px", cursor: "pointer" }}
             ></i>
