@@ -9,11 +9,11 @@ import { setMenuItem } from "../../../../Storage/Redux/menuItemSlice";
 function MenuItemList() {
   //const [menuItems, setMenuItems] = useState<menuItemModel[]>([]);
   const dispatch = useDispatch();
-  const { data, isLoading } = useGetMenuItemsQuery(null);
+  const { data, isLoading } = useGetMenuItemsQuery(null);// Calls useGetMenuItemsQuery() to fetch the menu items. The data object contains the fetched results, and isLoading indicates the loading state.
 
   useEffect(() => {
     if (!isLoading) {
-      dispatch(setMenuItem(data.result));
+      dispatch(setMenuItem(data.result));//Once data is populated with the fetched response. The useEffect hook is triggered, and dispatch(setMenuItem(data.result)) stores the data in Redux.
     }
   }, [isLoading]);
   if (isLoading){
