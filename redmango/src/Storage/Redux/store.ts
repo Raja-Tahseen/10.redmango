@@ -1,13 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { menuItemReducer } from "./menuItemSlice";
-import { menuItemApi } from "../../Apis";
+import { menuItemApi, shoppingCartApi } from "../../Apis";
 
 const store = configureStore({
     reducer: {
         menuItemStore: menuItemReducer,//Manages the state of menu items.
-        [menuItemApi.reducerPath]: menuItemApi.reducer//Handles API-related state using RTK Query.
+        [menuItemApi.reducerPath]: menuItemApi.reducer,//Handles API-related state using RTK Query.
+        [shoppingCartApi.reducerPath]: shoppingCartApi.reducer,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(menuItemApi.middleware),//Default middleware is extended to include menuItemApi.middleware for handling API caching and invalidation.
+    middleware: (getDefaultMiddleware) => 
+        getDefaultMiddleware()
+    .concat(menuItemApi.middleware)
+    .concat(shoppingCartApi.middleware),//Default middleware is extended to include menuItemApi.middleware for handling API caching and invalidation.
 });
 
 //working with TypeScript, we basically have to export the root state and that will be the type of store state.
