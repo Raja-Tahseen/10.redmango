@@ -3,6 +3,7 @@ import { cartItemModel } from '../../../Interfaces';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../Storage/Redux/store';
 import { inputHelper } from '../../../Helper';
+import { MiniLoader } from '../Common';
 
 function CartPickUpDetails() {
     let grandTotal = 0;
@@ -29,13 +30,20 @@ function CartPickUpDetails() {
         setUserInput(tempData);
     }
 
+    const [loading, setLoading] = useState(false);
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setLoading(true);
+        //Next 1) initiate the payment using API, 2)get the client token, and then move forward
+    }
+
   return (
     <div className="border pb-5 pt-3">
     <h1 style={{ fontWeight: "300" }} className="text-center text-success">
       Pickup Details
     </h1>
     <hr />
-    <form className="col-10 mx-auto">
+    <form onSubmit={handleSubmit} className="col-10 mx-auto">
       <div className="form-group mt-3">
         Pickup Name
         <input
@@ -81,9 +89,11 @@ function CartPickUpDetails() {
       </div>
       <button
         type="submit"
-        className="btn btn-lg btn-success form-control mt-3"
+        className="btn btn-lg btn-success form-control mt-3" 
+        disabled={loading}
       >
-        Looks Good? Place Order!
+        {loading ? <MiniLoader /> : "Looks Good? Place Order!"}
+        
       </button>
     </form>
   </div>
