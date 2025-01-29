@@ -1,20 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { cartItemModel } from '../../../Interfaces';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../Storage/Redux/store';
+import { inputHelper } from '../../../Helper';
 
 function CartPickUpDetails() {
-    const shoppingCartFromStore: cartItemModel[] = useSelector(
-      (state: RootState) => state.shoppingCartStore.cartItems ?? []
-    );
     let grandTotal = 0;
     let totalItems = 0;
+    const shoppingCartFromStore: cartItemModel[] = useSelector(
+      (state: RootState) => state.shoppingCartStore.cartItems ?? []
+    );    
 
     shoppingCartFromStore?.map((cartItem: cartItemModel) => {
       totalItems += cartItem.quantity ?? 0;
       grandTotal += (cartItem.menuItem?.price ?? 0) * (cartItem.quantity ?? 0);
       return null;
     });
+
+    const initialUserData = {
+        name: "",
+        email: "",
+        phoneNumber: "",
+    };
+
+    const [userInput, setUserInput] = useState(initialUserData);
+    const handleUserInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const tempData = inputHelper(e,userInput);
+        setUserInput(tempData);
+    }
 
   return (
     <div className="border pb-5 pt-3">
@@ -27,9 +40,11 @@ function CartPickUpDetails() {
         Pickup Name
         <input
           type="text"
+          value={userInput.name}
           className="form-control"
           placeholder="name..."
           name="name"
+          onChange={handleUserInput}
           required
         />
       </div>
@@ -37,9 +52,11 @@ function CartPickUpDetails() {
         Pickup Email
         <input
           type="email"
+          value={userInput.email}
           className="form-control"
           placeholder="email..."
           name="email"
+          onChange={handleUserInput}
           required
         />
       </div>
@@ -48,9 +65,11 @@ function CartPickUpDetails() {
         Pickup Phone Number
         <input
           type="number"
+          value={userInput.phoneNumber}
           className="form-control"
           placeholder="phone number..."
           name="phoneNumber"
+          onChange={handleUserInput}
           required
         />
       </div>
