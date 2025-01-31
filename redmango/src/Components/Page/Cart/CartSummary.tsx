@@ -10,11 +10,7 @@ function CartSummary() {
   const shoppingCartFromStore: cartItemModel[] = useSelector(
     (state: RootState) => state.shoppingCartStore.cartItems ?? []
   );
-  const [updateShoppingCart] = useUpdateShoppingCartMutation();
-
-  if (!shoppingCartFromStore) {
-    return <div>Shopping Cart Empty</div>
-  }
+  const [updateShoppingCart] = useUpdateShoppingCartMutation();  
 
   const handleQuantity = (updateQuantityBy:number, cartItem: cartItemModel) => {
     console.log(cartItem);
@@ -41,6 +37,10 @@ function CartSummary() {
     }
   }
 
+  if (!shoppingCartFromStore || shoppingCartFromStore.length === 0) {
+    return <div>Shopping Cart Empty</div>
+  }
+
   return (
     <div className="container p-4 m-2">
       <h4 className="text-center text-success">Cart Summary</h4>
@@ -52,7 +52,7 @@ function CartSummary() {
         >
           <div className="p-3">
             <img
-              src={`https://localhost:7181/images/${cartItem.menuItem.image}`}
+              src={`https://localhost:7181/images/${cartItem.menuItem?.image}`}
               alt=""
               width={"120px"}
               className="rounded-circle"
