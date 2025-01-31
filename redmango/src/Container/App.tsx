@@ -5,11 +5,22 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useGetShoppingCartQuery } from "../Apis/shoppingCartApi";
 import { setShoppingCart } from "../Storage/Redux/shoppingCartSlice";
+import { userModel } from "../Interfaces";
+import { jwtDecode } from "jwt-decode";
+import { setLoggedInUser } from "../Storage/Redux/userAuthSlice";
 
 function App() {
   const dispatch = useDispatch();
 
   const { data, isLoading } = useGetShoppingCartQuery("39cd62ee-2ef0-4fc3-9a75-e26bc0147aaf");
+
+  useEffect(()=> {
+    const localToken = localStorage.getItem("token");
+    if (localToken) {
+      const { fullName, id, email, role }: userModel = jwtDecode(localToken);
+      dispatch(setLoggedInUser({ fullName, id, email, role}));
+    }    
+  },[]);//This useEffect should be executed whenever the app is rendered.
 
   useEffect(() => {
     if (!isLoading) { //Means if the loading has been completed
