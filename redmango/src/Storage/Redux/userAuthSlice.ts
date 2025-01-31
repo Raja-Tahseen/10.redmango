@@ -12,7 +12,7 @@ export const userAuthSlice = createSlice({
     name: "MenuItem",
     initialState: initialState,
     reducers:{
-        setLoggedInUser: (state,action) => {//Updates the menuItem state with fetched data.
+        setLoggedInUser: (state,action) => {
             state.fullName = action.payload.fullName;
             state.id = action.payload.id;
             state.email = action.payload.email;
