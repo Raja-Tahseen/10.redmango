@@ -15,12 +15,11 @@ const withAdminAuth = (WrappedComponent: any) => {
         window.location.replace("/accessDenied");
         return null;
       }
-    }
-    else {
+    } else {
       window.location.replace("/login");
       return null;
     }
-    
+
     return <WrappedComponent {...props} />;
   };
 };

@@ -8,5 +8,14 @@ import AuthenticationTest from "./AuthenticationTest";
 import AuthenticationTestAdmin from "./AuthenticationTestAdmin";
 import AccessDenied from "./AccessDenied";
 
-
-export { Home, NotFound, MenuItemDetails, ShoppingCart, Register, Login, AuthenticationTest, AuthenticationTestAdmin, AccessDenied };
+export {
+  Home,
+  NotFound,
+  MenuItemDetails,
+  ShoppingCart,
+  Register,
+  Login,
+  AuthenticationTest,
+  AuthenticationTestAdmin,
+  AccessDenied,
+};

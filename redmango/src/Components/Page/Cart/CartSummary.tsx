@@ -1,8 +1,10 @@
-import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { cartItemModel, userModel } from "../../../Interfaces";
 import { RootState } from "../../../Storage/Redux/store";
-import { removeFromCart, updateQuantity } from "../../../Storage/Redux/shoppingCartSlice";
+import {
+  removeFromCart,
+  updateQuantity,
+} from "../../../Storage/Redux/shoppingCartSlice";
 import { useUpdateShoppingCartMutation } from "../../../Apis/shoppingCartApi";
 
 function CartSummary() {
@@ -10,38 +12,46 @@ function CartSummary() {
   const shoppingCartFromStore: cartItemModel[] = useSelector(
     (state: RootState) => state.shoppingCartStore.cartItems ?? []
   );
-  const userData : userModel = useSelector(
-    (state: RootState) => state.userAuthStore);
+  const userData: userModel = useSelector(
+    (state: RootState) => state.userAuthStore
+  );
 
-  const [updateShoppingCart] = useUpdateShoppingCartMutation();  
+  const [updateShoppingCart] = useUpdateShoppingCartMutation();
 
-  const handleQuantity = (updateQuantityBy:number, cartItem: cartItemModel) => {
+  const handleQuantity = (
+    updateQuantityBy: number,
+    cartItem: cartItemModel
+  ) => {
     console.log(cartItem);
-    if((updateQuantityBy==-1 && cartItem.quantity==1) || updateQuantityBy == 0) {
+    if (
+      (updateQuantityBy == -1 && cartItem.quantity == 1) ||
+      updateQuantityBy == 0
+    ) {
       //remove the item
       updateShoppingCart({
-        menuItemId: cartItem.menuItem?.id, 
-        updateQuantityBy: 0, 
-        userId: userData.id
+        menuItemId: cartItem.menuItem?.id,
+        updateQuantityBy: 0,
+        userId: userData.id,
       });
-      dispatch(removeFromCart({cartItem, quantity:0}));      
-    }
-    else{
+      dispatch(removeFromCart({ cartItem, quantity: 0 }));
+    } else {
       //update the quantity with the new quantity
       updateShoppingCart({
-        menuItemId: cartItem.menuItem?.id, 
-        updateQuantityBy: updateQuantityBy, 
-        userId: userData.id
+        menuItemId: cartItem.menuItem?.id,
+        updateQuantityBy: updateQuantityBy,
+        userId: userData.id,
       });
-      dispatch(updateQuantity({
-        cartItem, 
-        quantity: cartItem.quantity! + updateQuantityBy,
-      }));//Added not sign '!' to check if not null and then it will access its value      
+      dispatch(
+        updateQuantity({
+          cartItem,
+          quantity: cartItem.quantity! + updateQuantityBy,
+        })
+      ); //Added not sign '!' to check if not null and then it will access its value
     }
-  }
+  };
 
   if (!shoppingCartFromStore || shoppingCartFromStore.length === 0) {
-    return <div>Shopping Cart Empty</div>
+    return <div>Shopping Cart Empty</div>;
   }
 
   return (
@@ -82,17 +92,28 @@ function CartSummary() {
                 }}
               >
                 <span style={{ color: "rgba(22,22,22,.7)" }} role="button">
-                  <i className="bi bi-dash-circle-fill" onClick={() => handleQuantity(-1,cartItem)}></i>
+                  <i
+                    className="bi bi-dash-circle-fill"
+                    onClick={() => handleQuantity(-1, cartItem)}
+                  ></i>
                 </span>
                 <span>
                   <b>{cartItem.quantity}</b>
                 </span>
                 <span style={{ color: "rgba(22,22,22,.7)" }} role="button">
-                  <i className="bi bi-plus-circle-fill"  onClick={() => handleQuantity(1,cartItem)}></i>
+                  <i
+                    className="bi bi-plus-circle-fill"
+                    onClick={() => handleQuantity(1, cartItem)}
+                  ></i>
                 </span>
               </div>
 
-              <button className="btn btn-danger mx-1"  onClick={() => handleQuantity(0,cartItem)}>Remove</button>
+              <button
+                className="btn btn-danger mx-1"
+                onClick={() => handleQuantity(0, cartItem)}
+              >
+                Remove
+              </button>
             </div>
           </div>
         </div>
