@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { cartItemModel } from "../../../Interfaces";
+import { cartItemModel, userModel } from "../../../Interfaces";
 import { RootState } from "../../../Storage/Redux/store";
 import { removeFromCart, updateQuantity } from "../../../Storage/Redux/shoppingCartSlice";
 import { useUpdateShoppingCartMutation } from "../../../Apis/shoppingCartApi";
@@ -10,6 +10,9 @@ function CartSummary() {
   const shoppingCartFromStore: cartItemModel[] = useSelector(
     (state: RootState) => state.shoppingCartStore.cartItems ?? []
   );
+  const userData : userModel = useSelector(
+    (state: RootState) => state.userAuthStore);
+
   const [updateShoppingCart] = useUpdateShoppingCartMutation();  
 
   const handleQuantity = (updateQuantityBy:number, cartItem: cartItemModel) => {
@@ -19,7 +22,7 @@ function CartSummary() {
       updateShoppingCart({
         menuItemId: cartItem.menuItem?.id, 
         updateQuantityBy: 0, 
-        userId: "39cd62ee-2ef0-4fc3-9a75-e26bc0147aaf"
+        userId: userData.id
       });
       dispatch(removeFromCart({cartItem, quantity:0}));      
     }
@@ -28,7 +31,7 @@ function CartSummary() {
       updateShoppingCart({
         menuItemId: cartItem.menuItem?.id, 
         updateQuantityBy: updateQuantityBy, 
-        userId: "39cd62ee-2ef0-4fc3-9a75-e26bc0147aaf"
+        userId: userData.id
       });
       dispatch(updateQuantity({
         cartItem, 
