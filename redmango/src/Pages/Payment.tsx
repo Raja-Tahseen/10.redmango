@@ -19,15 +19,16 @@ const options = {
     clientSecret: apiResult.clientSecret,
   };
 
-//   console.log(apiResult);
-//   console.log(userInput);
-
   return (
     <Elements stripe={stripePromise} options={options}>
         <div className="container m-5 p-5">
             <div className="row">
-                <div className="col-md-7"><OrderSummary /></div>
-                <div className="col-md-5"><PaymentForm /></div>
+                <div className="col-md-7">
+                    <OrderSummary data={apiResult} userInput={userInput} />
+                </div>
+                <div className="col-md-5">
+                    <PaymentForm />
+                </div>
             </div>
         </div>      
     </Elements>
