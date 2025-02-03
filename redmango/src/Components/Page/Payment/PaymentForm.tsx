@@ -25,6 +25,7 @@ const PaymentForm = () => {
             confirmParams: {
               return_url: "https://example.com/order/123/complete",
             },
+            redirect: "if_required",
           });
       
           if (result.error) {
@@ -49,3 +50,9 @@ const PaymentForm = () => {
 };
 
 export default PaymentForm;
+
+//---Followig is the default redirect URL if we don't use 
+//https://example.com/order/123/complete?
+// payment_intent=pi_3QoPmMEJYDXr859P1G4ARXSi
+// &payment_intent_client_secret=pi_3QoPmMEJYDXr859P1G4ARXSi_secret_YxqORXYblJo3PbeiXh60IFZuZ
+// &redirect_status=succeeded
