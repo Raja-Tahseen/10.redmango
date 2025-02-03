@@ -1,0 +1,23 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+
+const paymentApi = createApi({
+  reducerPath: "paymentApi",
+  baseQuery: fetchBaseQuery({
+    baseUrl: "https://localhost:7181/api/",
+  }),
+  endpoints: (builder) => ({
+    initiatePayment: builder.mutation({
+      query: (userId) => ({
+        url: "payment",
+        method: "POST",
+        params: {
+          userId: userId,
+        },
+      }),
+    }),
+  }),
+});
+
+//RTK Query hooks (useGetMenuItemsQuery, useGetMenuItemByIdQuery) are used to fetch data from APIs.
+export const { useInitiatePaymentMutation } = paymentApi;
+export default paymentApi;
