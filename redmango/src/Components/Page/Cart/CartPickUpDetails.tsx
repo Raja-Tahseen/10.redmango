@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { cartItemModel, userModel } from "../../../Interfaces";
+import { apiResponse, cartItemModel, userModel } from "../../../Interfaces";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Storage/Redux/store";
 import { inputHelper } from "../../../Helper";
 import { MiniLoader } from "../Common";
+import { useInitiatePaymentMutation } from "../../../Apis/paymentApi";
+import { useNavigate } from "react-router-dom";
 
 function CartPickUpDetails() {
   let grandTotal = 0;
@@ -34,10 +36,20 @@ function CartPickUpDetails() {
   };
 
   const [loading, setLoading] = useState(false);
+  const [initiatePayment] = useInitiatePaymentMutation();
+  const navigate = useNavigate();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     //Next 1) initiate the payment using API, 2)get the client token, and then move forward
+
+    const { data } : apiResponse = await initiatePayment(userData.id);
+    const orderSummary = { grandTotal, totalItems};
+    console.log(data);
+    navigate("/payment", {
+      state: { apiResult: data?.result, userData, orderSummary }
+    });
+
   };
 
   return (

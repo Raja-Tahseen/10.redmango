@@ -9,6 +9,7 @@ import {
   AuthenticationTest,
   AuthenticationTestAdmin,
   AccessDenied,
+  Payment,
 } from "../Pages";
 import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
@@ -65,6 +66,7 @@ function App() {
             element={<MenuItemDetails />}
           ></Route>
           <Route path="/shoppingCart" element={<ShoppingCart />}></Route>
+          <Route path="/payment" element={<Payment />}></Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </div>

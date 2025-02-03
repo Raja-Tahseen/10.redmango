@@ -18,6 +18,5 @@ const paymentApi = createApi({
   }),
 });
 
-//RTK Query hooks (useGetMenuItemsQuery, useGetMenuItemByIdQuery) are used to fetch data from APIs.
 export const { useInitiatePaymentMutation } = paymentApi;
 export default paymentApi;
