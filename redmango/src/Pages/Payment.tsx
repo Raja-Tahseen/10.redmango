@@ -2,6 +2,7 @@ import { useLocation } from "react-router-dom";
 import {Elements} from '@stripe/react-stripe-js';
 import {loadStripe} from '@stripe/stripe-js';
 import { PaymentForm } from "../Components/Page/Payment";
+import { OrderSummary } from "../Components/Page/Order";
 
 function Payment() {
   const {
@@ -23,7 +24,12 @@ const options = {
 
   return (
     <Elements stripe={stripePromise} options={options}>
-      <PaymentForm />
+        <div className="container m-5 p-5">
+            <div className="row">
+                <div className="col-md-7"><OrderSummary /></div>
+                <div className="col-md-5"><PaymentForm /></div>
+            </div>
+        </div>      
     </Elements>
   );
 }
