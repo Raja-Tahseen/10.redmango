@@ -44,10 +44,9 @@ function CartPickUpDetails() {
     //Next 1) initiate the payment using API, 2)get the client token, and then move forward
 
     const { data } : apiResponse = await initiatePayment(userData.id);
-    const orderSummary = { grandTotal, totalItems};
     console.log(data);
     navigate("/payment", {
-      state: { apiResult: data?.result, userData, orderSummary }
+      state: { apiResult: data?.result, userInput }
     });
 
   };
