@@ -1,8 +1,10 @@
 import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
 import React, { useState } from 'react';
 import { toastNotify } from '../../../Helper';
+import { orderSummaryProps } from '../Order/OrderSummaryProps';
+import { cartItemModel } from '../../../Interfaces';
 
-const PaymentForm = () => {
+const PaymentForm = ({ data, userInput }: orderSummaryProps) => {
         const stripe = useStripe();
         const elements = useElements();
         const [isProcessing, setIsProcessing] = useState(false);
@@ -38,6 +40,25 @@ const PaymentForm = () => {
             // methods like iDEAL, your customer will be redirected to an intermediate
             // site first to authorize the payment, then redirected to the `return_url`.
             console.log(result);
+            // "pickupName": "string",
+            // "pickupPhoneNumber": "string",
+            // "pickupEmail": "string",
+            // "applicationUserId": "string",
+            // "orderTotal": 0,
+            // "stripePaymentIntentID": "string",
+            // "status": "string",
+            // "totalItems": 0,
+            
+            const orderDetailsDTO: any = [];
+            data.cartItems.forEach((item:cartItemModel)=>{
+              const tempOrderDetail: any = {};
+              tempOrderDetail["menuItemId"] = item.menuItem?.id;
+              tempOrderDetail["quantity"] = item.quantity;
+              tempOrderDetail["itemName"] = item.menuItem?.name;
+              tempOrderDetail["price"] = item.menuItem?.price;
+              orderDetailsDTO.push(tempOrderDetail);
+            })
+
           }
         };
 
