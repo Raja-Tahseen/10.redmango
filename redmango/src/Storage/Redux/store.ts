@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { menuItemReducer } from "./menuItemSlice";
 import { shoppingCartReducer } from "./shoppingCartSlice";
 import { userAuthReducer } from "./userAuthSlice";
-import { authApi, menuItemApi, paymentApi, shoppingCartApi } from "../../Apis";
+import { authApi, menuItemApi, paymentApi, shoppingCartApi, orderApi } from "../../Apis";
 
 const store = configureStore({
   reducer: {
@@ -13,14 +13,16 @@ const store = configureStore({
     [shoppingCartApi.reducerPath]: shoppingCartApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [paymentApi.reducerPath]: paymentApi.reducer,
+    [orderApi.reducerPath]: orderApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(menuItemApi.middleware)
       .concat(authApi.middleware)
       .concat(shoppingCartApi.middleware)
-      .concat(paymentApi.middleware),
-      //Default middleware is extended to include menuItemApi.middleware for handling API caching and invalidation.
+      .concat(paymentApi.middleware)
+      .concat(orderApi.middleware)
+      //Default middleware is extended to include menuItemApi.middleware and others for handling API caching and invalidation.
 });
 
 //working with TypeScript, we basically have to export the root state and that will be the type of store state.
