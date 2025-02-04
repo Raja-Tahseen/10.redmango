@@ -5,12 +5,14 @@ import { orderSummaryProps } from '../Order/OrderSummaryProps';
 import { apiResponse, cartItemModel } from '../../../Interfaces';
 import { useCreateOrderMutation } from '../../../Apis/orderApi';
 import { SD_Status } from '../../../Utility/SD';
+import { useNavigate } from "react-router-dom";
 
 const PaymentForm = ({ data, userInput }: orderSummaryProps) => {
         const stripe = useStripe();
         const elements = useElements();
         const [isProcessing, setIsProcessing] = useState(false);
         const [createOrder] = useCreateOrderMutation();
+        const navigate = useNavigate();
 
       
         const handleSubmit = async (event : React.FormEvent<HTMLFormElement>) => {
@@ -72,7 +74,16 @@ const PaymentForm = ({ data, userInput }: orderSummaryProps) => {
               status: result.paymentIntent.status ==="succeeded"? SD_Status.CONFIRMED: SD_Status.PENDING,
             });
             console.log(response);
+            if (response) {
+              if (response.data?.result.status === SD_Status.CONFIRMED) {
+                navigate(`/order/orderconfirmed/${response.data.result.orderHeaderId}`);
+              }
+              else{
+                navigate("/failed");//Need to create this page according to ur business requirements.
+              }
+            }
           }
+          setIsProcessing(false);
         };
 
   return (
