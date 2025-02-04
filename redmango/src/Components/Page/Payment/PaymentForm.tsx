@@ -2,12 +2,15 @@ import {useStripe, useElements, PaymentElement} from '@stripe/react-stripe-js';
 import React, { useState } from 'react';
 import { toastNotify } from '../../../Helper';
 import { orderSummaryProps } from '../Order/OrderSummaryProps';
-import { cartItemModel } from '../../../Interfaces';
+import { apiResponse, cartItemModel } from '../../../Interfaces';
+import { useCreateOrderMutation } from '../../../Apis/orderApi';
+import { SD_Status } from '../../../Utility/SD';
 
 const PaymentForm = ({ data, userInput }: orderSummaryProps) => {
         const stripe = useStripe();
         const elements = useElements();
         const [isProcessing, setIsProcessing] = useState(false);
+        const [createOrder] = useCreateOrderMutation();
 
       
         const handleSubmit = async (event : React.FormEvent<HTMLFormElement>) => {
@@ -32,23 +35,19 @@ const PaymentForm = ({ data, userInput }: orderSummaryProps) => {
       
           if (result.error) {
             // Show error to your customer (for example, payment details incomplete)
-            console.log(result.error.message);
+            //console.log(result.error.message);
             toastNotify("An unexpected error occured.", "error");
             setIsProcessing(false);
           } else {
             // Your customer will be redirected to your `return_url`. For some payment
             // methods like iDEAL, your customer will be redirected to an intermediate
             // site first to authorize the payment, then redirected to the `return_url`.
-            console.log(result);
-            // "pickupName": "string",
-            // "pickupPhoneNumber": "string",
-            // "pickupEmail": "string",
-            // "applicationUserId": "string",
-            // "orderTotal": 0,
-            // "stripePaymentIntentID": "string",
-            // "status": "string",
-            // "totalItems": 0,
+            //console.log(result);
             
+            
+            
+            let grandTotal = 0;
+            let totalItems = 0;
             const orderDetailsDTO: any = [];
             data.cartItems.forEach((item:cartItemModel)=>{
               const tempOrderDetail: any = {};
@@ -57,8 +56,22 @@ const PaymentForm = ({ data, userInput }: orderSummaryProps) => {
               tempOrderDetail["itemName"] = item.menuItem?.name;
               tempOrderDetail["price"] = item.menuItem?.price;
               orderDetailsDTO.push(tempOrderDetail);
-            })
+              grandTotal += item.quantity! * item.menuItem?.price!;//! makes sure it has value then access's it.
+              totalItems =+ item.quantity!;
+            });
 
+            const response: apiResponse = await createOrder({
+              pickupName: userInput.name,
+              pickupPhoneNumber: userInput.phoneNumber,
+              pickupEmail: userInput.email,
+              totalItems: totalItems,
+              orderTotal: grandTotal,
+              orderDetailsDTO: orderDetailsDTO,
+              stripePaymentIntentID: data.stripePaymentIntentId,
+              applicationUserId: data.userId,
+              status: result.paymentIntent.status ==="succeeded"? SD_Status.CONFIRMED: SD_Status.PENDING,
+            });
+            console.log(response);
           }
         };
 
