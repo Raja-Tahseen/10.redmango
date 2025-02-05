@@ -4,7 +4,7 @@ import shoppingCartModel from "./shoppingCartModel";
 import userModel from "./userModel.ts";
 import apiResponse from "./apiResponse.ts";
 import orderDetail from "./orderDetailModel.ts";
-import orderHeader from "./orderHeaderModel.ts";
+import orderHeaderModel from "./orderHeaderModel.ts";
 
 export type {
   menuItemModel,
@@ -13,5 +13,5 @@ export type {
   userModel,
   apiResponse,
   orderDetail,
-  orderHeader,
+  orderHeaderModel,
 };

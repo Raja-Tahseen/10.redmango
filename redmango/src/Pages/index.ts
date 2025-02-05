@@ -10,6 +10,7 @@ import AccessDenied from "./AccessDenied";
 import Payment from "./Payment";
 import ConfirmedOrder from "./Order/OrderConfirmed";
 import MyOrders from "./Order/MyOrders";
+import OrderDetails from "./Order/OrderDetails";
 
 export {
   Home,
@@ -24,4 +25,5 @@ export {
   Payment,
   ConfirmedOrder,
   MyOrders,
+  OrderDetails,
 };
