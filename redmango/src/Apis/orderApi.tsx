@@ -5,6 +5,7 @@ const orderApi = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: "https://localhost:7181/api/",
     }),
+    tagTypes: ["Orders"],
     endpoints: (builder) => ({
         createOrder : builder.mutation({
             query: (orderDetails) => ({
@@ -16,8 +17,25 @@ const orderApi = createApi({
                 body: orderDetails,
             }),
         }),
+         getAllOrders: builder.query({
+            query: (userId) => ({
+                url: "order",
+                method: "GET",
+                params: {
+                    userId: userId,
+                },
+            }),
+            providesTags: ["Orders"],
+         }),
+         getOrderDetails: builder.query({
+            query: (id) => ({
+                url: `order/${id}`,
+                method: "GET",
+            }),
+            providesTags: ["Orders"],
+         }),
     }),
 });
 
-export const { useCreateOrderMutation } = orderApi;
+export const { useCreateOrderMutation, useGetAllOrdersQuery, useGetOrderDetailsQuery } = orderApi;
 export default orderApi;
