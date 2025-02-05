@@ -10,6 +10,7 @@ import {
   AuthenticationTestAdmin,
   AccessDenied,
   Payment,
+  MyOrders,
 } from "../Pages";
 import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
@@ -69,6 +70,7 @@ function App() {
           <Route path="/shoppingCart" element={<ShoppingCart />}></Route>
           <Route path="/payment" element={<Payment />}></Route>
           <Route path="order/orderconfirmed/:id" element={<OrderConfirmed />}></Route>
+          <Route path="order/myOrders" element={<MyOrders />}></Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </div>
