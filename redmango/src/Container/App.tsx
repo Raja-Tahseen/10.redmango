@@ -20,6 +20,7 @@ import { userModel } from "../Interfaces";
 import { jwtDecode } from "jwt-decode";
 import { setLoggedInUser } from "../Storage/Redux/userAuthSlice";
 import { RootState } from "../Storage/Redux/store";
+import OrderConfirmed from "../Pages/Order/OrderConfirmed";
 
 function App() {
   const dispatch = useDispatch();
@@ -67,6 +68,7 @@ function App() {
           ></Route>
           <Route path="/shoppingCart" element={<ShoppingCart />}></Route>
           <Route path="/payment" element={<Payment />}></Route>
+          <Route path="order/orderconfirmed/:id" element={<OrderConfirmed />}></Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </div>
