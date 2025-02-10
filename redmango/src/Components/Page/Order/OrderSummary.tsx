@@ -90,8 +90,14 @@ const nextStatus: any =
               Back to Orders
             </button>
         {userData.role == SD_Roles.ADMIN && (
-          <div>
-            <button className="btn btn-danger mx-2" onClick={handleCancel}>Cancel</button>
+          <div className="d-flex">
+            {data.status! !== SD_Status.COMPLETED && 
+            data.status! !== SD_Status.CANCELLED && (
+            <button className="btn btn-danger mx-2" onClick={handleCancel}>
+              Cancel
+            </button>
+          )}
+            
           <button 
             className={`btn btn-${nextStatus.color}`} onClick={handleNextStatus}>
             {nextStatus.value}
