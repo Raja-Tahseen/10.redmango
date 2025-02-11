@@ -64,6 +64,11 @@ function Header() {
                   Admin Panel
                 </a>
                 <ul className="dropdown-menu">
+                  <li className="dropdown-item" 
+                  style={{ cursor: "pointer"}}
+                  onClick={() => navigate("menuItem/menuItemList")}>
+                      Menu Items
+                  </li>
                   <li 
                   style={{ cursor: "pointer"}}
                   className="dropdown-item" 
@@ -77,11 +82,6 @@ function Header() {
                   onClick={()=> navigate("order/allOrders")}
                   >
                       All Orders
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      Something else here
-                    </a>
                   </li>
                 </ul> 
                 </li> 

@@ -13,6 +13,7 @@ import {
   MyOrders,
   OrderDetails,
   AllOrders,
+  MenuItemList,
 } from "../Pages";
 import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
@@ -75,6 +76,7 @@ function App() {
           <Route path="order/myOrders" element={<MyOrders />}></Route>
           <Route path="order/orderDetails/:id" element={<OrderDetails />}></Route>
           <Route path="order/allOrders" element={<AllOrders />}></Route>
+          <Route path="menuItem/menuItemList" element={<MenuItemList />}></Route>
           <Route path="*" element={<NotFound />}></Route>
         </Routes>
       </div>
