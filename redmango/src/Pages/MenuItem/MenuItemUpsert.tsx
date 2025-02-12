@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import { inputHelper } from '../../Helper';
+import { inputHelper, toastNotify } from '../../Helper';
 
 const menuItemData = {
   name: "",
@@ -11,6 +11,8 @@ const menuItemData = {
 
 function MenuItemUpsert() {
 const [menuItemInputs, setMenuItemInputs] = useState(menuItemData);
+const [imageToBeStore, setImageToBeStore] = useState<any>();
+const [imageToBeDisplay, setImageToBeDisplay] = useState<string>("");
 
 const handleMenuItemInput = (
   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -18,6 +20,38 @@ const handleMenuItemInput = (
   const tempData = inputHelper(e, menuItemData);
   setMenuItemInputs(tempData);
 };
+
+const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files && e.target.files[0];
+  if(file) {
+    console.log(file);
+    const imageType = file.type.split("/")[1];
+    const validImgTypes = ["jpeg", "jpg", "png"];
+
+    const isImageTypeValid = validImgTypes.filter((e) => {
+      return e === imageType;
+    });
+
+    if (file.size > 1000 * 1024) {
+      setImageToBeStore("");
+      toastNotify("File Size Must be less then 1 MB", "error");
+      return;
+    }
+    else if (isImageTypeValid.length === 0) {
+      setImageToBeStore("");
+      toastNotify("File must be in jpeg,jpg or png", "error");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    setImageToBeStore(file);
+    reader.onload = (e) => {
+      const imageUrl = e.target?.result as string as string;
+      setImageToBeDisplay(imageUrl);
+    }
+  }
+}
 
   return (
     <div className="container border mt-5 p-5">
@@ -67,7 +101,10 @@ const handleMenuItemInput = (
             value={menuItemInputs.price}
             onChange={handleMenuItemInput}
           />
-          <input type="file" className="form-control mt-3" />
+          <input 
+          type="file" 
+          className="form-control mt-3" 
+          onChange={handleFileChange} />
           <div className="text-center">
             <button
               type="submit"
@@ -80,7 +117,7 @@ const handleMenuItemInput = (
         </div>
         <div className="col-md-5 text-center">
           <img
-            src="https://via.placeholder.com/150"
+            src={imageToBeDisplay}
             style={{ width: "100%", borderRadius: "30px" }}
             alt=""
           />
