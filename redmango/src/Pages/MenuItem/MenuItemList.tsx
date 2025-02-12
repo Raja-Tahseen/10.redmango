@@ -1,27 +1,14 @@
 import { useGetMenuItemsQuery } from "../../Apis/menuItemApi";
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { MainLoader } from "../../Components/Page/Common";
 import { setMenuItem } from "../../Storage/Redux/menuItemSlice";
 import { menuItemModel } from "../../Interfaces";
+import { useNavigate } from "react-router-dom";
 
 function MenuItemList() {
   const { data, isLoading } = useGetMenuItemsQuery(null);
   const dispatch = useDispatch();
-
-  //   useEffect(() => {
-  //     if (!isLoading) {
-  //       dispatch(setMenuItem(data.result));
-  //       console.log(data.result);
-  //     }
-  //   }, [isLoading]);
-//   if (isLoading) {
-//     return (
-//       <div>
-//         <MainLoader />
-//       </div>
-//     );
-//   }
+  const navigate = useNavigate();
 
   return (
     <>
@@ -30,7 +17,8 @@ function MenuItemList() {
         <div className="table p-5">
         <div className="d-flex align-items-center justify-content-between">
           <h1 className="text-success">MenuItem List</h1>
-          <button className="btn btn-success">Add New</button>
+          <button className="btn btn-success"
+          onClick={() => navigate("/menuItem/menuItemUpsert/")}>Add New</button>
         </div>
         <div className="p-2">
           <div className="row border">
@@ -60,7 +48,8 @@ function MenuItemList() {
                   <div className="col-2">{menuItem.specialTag}</div>
                   <div className="col-1">
                     <button className="btn btn-success">
-                      <i className="bi bi-pencil-fill"></i>
+                      <i className="bi bi-pencil-fill"
+                      onClick={() => navigate("/menuItem/menuItemUpsert/" + menuItem.id)}></i>
                     </button>
                     <button className="btn btn-danger mx-2">
                       <i className="bi bi-trash-fill"></i>
