@@ -117,7 +117,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         </div>
         <div className="col-md-5 text-center">
           <img
-            src={imageToBeDisplay}
+            src={imageToBeDisplay} 
             style={{ width: "100%", borderRadius: "30px" }}
             alt=""
           />

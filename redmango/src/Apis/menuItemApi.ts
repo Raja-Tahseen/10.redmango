@@ -31,10 +31,39 @@ const menuItemApi = createApi({
                 url: `menuItem/${id}`,
             }),
             providesTags:["MenuItems"]
-        })
+        }),
+        updateMenuItem : builder.mutation({
+            query: ({data,id}) => ({
+                url: "menuItem/" + id,
+                method: "PUT",
+                body: data,
+            }),
+            invalidatesTags: ["MenuItems"],
+        }),
+        createMenuItem : builder.mutation({
+            query: (data) => ({
+                url: "menuItem/",
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ["MenuItems"],
+        }),
+        deleteMenuItem : builder.mutation({
+            query: (id) => ({
+                url: "menuItem/" + id,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["MenuItems"],
+        }),
     }),
 });
 
 //RTK Query hooks (useGetMenuItemsQuery, useGetMenuItemByIdQuery) are used to fetch data from APIs.
-export const {useGetMenuItemsQuery, useGetMenuItemByIdQuery} = menuItemApi;
+export const {
+    useGetMenuItemsQuery, 
+    useGetMenuItemByIdQuery, 
+    useUpdateMenuItemMutation,
+    useCreateMenuItemMutation,
+    useDeleteMenuItemMutation
+    } = menuItemApi;
 export default menuItemApi;
