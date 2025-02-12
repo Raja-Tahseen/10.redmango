@@ -18,7 +18,7 @@ function MenuItemList() {
         <div className="d-flex align-items-center justify-content-between">
           <h1 className="text-success">MenuItem List</h1>
           <button className="btn btn-success"
-          onClick={() => navigate("/menuItem/menuItemUpsert/")}>Add New</button>
+          onClick={() => navigate("/menuItem/menuItemUpsert/")}>Add New Menu Item</button>
         </div>
         <div className="p-2">
           <div className="row border">
