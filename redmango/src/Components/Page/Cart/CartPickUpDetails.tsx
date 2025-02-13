@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { apiResponse, cartItemModel, userModel } from "../../../Interfaces";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../Storage/Redux/store";
@@ -34,6 +34,14 @@ function CartPickUpDetails() {
     const tempData = inputHelper(e, userInput);
     setUserInput(tempData);
   };
+
+  useEffect(() => {
+    setUserInput({
+      name: userData.fullName,
+    email: userData.email,
+    phoneNumber: "",
+    });
+  }, [userData]);
 
   const [loading, setLoading] = useState(false);
   const [initiatePayment] = useInitiatePaymentMutation();
