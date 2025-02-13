@@ -7,12 +7,20 @@ import {
 } from "../../Apis/menuItemApi";
 import { useNavigate, useParams } from 'react-router-dom';
 import { MainLoader } from '../../Components/Page/Common';
+import { SD_Categories } from "../../Utility/SD";
+
+const Categories = [
+  SD_Categories.APPETIZER,
+  SD_Categories.BEVERAGES,
+  SD_Categories.DESSERT,
+  SD_Categories.ENTREE,
+];
 
 const menuItemData = {
   name: "",
   description: "",
   specialTag: "",
-  category: "",
+  category: Categories[0],
   price: "",
 };
 
@@ -153,14 +161,16 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             value={menuItemInputs.specialTag}
             onChange={handleMenuItemInput}
           />
-          <input
-            type="text"
-            className="form-control mt-3"
-            placeholder="Enter Category"
+          <select
+            className="form-control mt-3 form-select"
             name="category"
             value={menuItemInputs.category}
             onChange={handleMenuItemInput}
-          />
+          >
+            {Categories.map((category) => (
+              <option value={category}>{category}</option>
+            ))}
+            </select>
           <input
             type="number"
             className="form-control mt-3"
