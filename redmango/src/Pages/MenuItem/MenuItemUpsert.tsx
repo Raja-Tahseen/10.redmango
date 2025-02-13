@@ -103,7 +103,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   const formData = new FormData();
   formData.append("Name" , menuItemInputs.name);
   formData.append("Description" , menuItemInputs.description);
-  formData.append("SpecialTag" , menuItemInputs.specialTag);
+  formData.append("SpecialTag" , menuItemInputs.specialTag ?? "");
   formData.append("Category" , menuItemInputs.category);
   formData.append("Price" , menuItemInputs.price);
   if(imageToDisplay) formData.append("File" , imageToStore);
@@ -170,7 +170,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
             {Categories.map((category) => (
               <option value={category}>{category}</option>
             ))}
-            </select>
+          </select>
           <input
             type="number"
             className="form-control mt-3"
