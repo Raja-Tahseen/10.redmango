@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   menuItem: [], //An array to store fetched menu items.
+  search:""
 };
 
 export const menuItemSlice = createSlice({
@@ -13,8 +14,11 @@ export const menuItemSlice = createSlice({
       //Updates the menuItem state with fetched data.
       state.menuItem = action.payload;
     },
+    setSearchItem: (state, action) => {
+      state.search = action.payload;
+    }
   },
 });
 
-export const { setMenuItem } = menuItemSlice.actions;
+export const { setMenuItem, setSearchItem } = menuItemSlice.actions;
 export const menuItemReducer = menuItemSlice.reducer;
