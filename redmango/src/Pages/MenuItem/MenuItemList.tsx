@@ -1,14 +1,31 @@
-import { useGetMenuItemsQuery } from "../../Apis/menuItemApi";
+import { useGetMenuItemsQuery, useDeleteMenuItemMutation } from "../../Apis/menuItemApi";
 import { useDispatch } from "react-redux";
 import { MainLoader } from "../../Components/Page/Common";
 import { setMenuItem } from "../../Storage/Redux/menuItemSlice";
 import { menuItemModel } from "../../Interfaces";
 import { useNavigate } from "react-router-dom";
+// import { toastNotify } from "../../Helper";
+import { toast } from "react-toastify";
 
 function MenuItemList() {
   const { data, isLoading } = useGetMenuItemsQuery(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [deleteMenuItem] = useDeleteMenuItemMutation();
+
+  const handleMenuItemDelete = (id: number) => {
+    toast.promise(deleteMenuItem(id),{
+      pending: 'Processing your request...',
+      success: 'Menu Item Deleted Successfully',
+      error: 'Error Encountered..'
+    },
+    {
+      theme : "dark"
+    }
+  );
+    // deleteMenuItem(id);
+    // toastNotify("Item Menu Delated Successfully", "warning");
+  }
 
   return (
     <>
@@ -52,7 +69,7 @@ function MenuItemList() {
                       onClick={() => navigate("/menuItem/menuItemUpsert/" + menuItem.id)}></i>
                     </button>
                     <button className="btn btn-danger mx-2">
-                      <i className="bi bi-trash-fill"></i>
+                      <i className="bi bi-trash-fill" onClick={() => handleMenuItemDelete(menuItem.id)}></i>
                     </button>
                   </div>
                 </div>
