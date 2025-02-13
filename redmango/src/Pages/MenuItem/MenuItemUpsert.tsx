@@ -3,6 +3,7 @@ import { inputHelper, toastNotify } from '../../Helper';
 import {
   useCreateMenuItemMutation,
   useGetMenuItemByIdQuery,
+  useUpdateMenuItemMutation,
 } from "../../Apis/menuItemApi";
 import { useNavigate, useParams } from 'react-router-dom';
 import { MainLoader } from '../../Components/Page/Common';
@@ -24,6 +25,7 @@ const [imageToDisplay, setImageToDisplay] = useState<string>("");
 const [loading, setLoading] = useState(false);
 const [createMenuItem] = useCreateMenuItemMutation();
 const navigate = useNavigate();
+const [updateMenuItem] = useUpdateMenuItemMutation();
 
 const { data } = useGetMenuItemByIdQuery(id);
 
@@ -37,7 +39,8 @@ useEffect(() => {
       price: data.result.price,
     };
     setMenuItemInputs(tempData);
-    setImageToDisplay(data.result.image);
+    setImageToDisplay(`https://localhost:7181/images/${data.result.image}`);
+    //src={`https://localhost:7181/images/${data.result.image}`}
   }
 }, [data]);
 
@@ -83,7 +86,7 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
   setLoading(true);
-  if (!imageToStore) {
+  if (!imageToStore && !id) {
     toastNotify("Please upload an image", "error");
     setLoading(false);
     return;
@@ -95,9 +98,21 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   formData.append("SpecialTag" , menuItemInputs.specialTag);
   formData.append("Category" , menuItemInputs.category);
   formData.append("Price" , menuItemInputs.price);
-  formData.append("File" , imageToStore);
+  if(imageToDisplay) formData.append("File" , imageToStore);
 
-  const response = await createMenuItem(formData);
+  let response;
+
+  if (id) {
+    //update
+    formData.append("Id", id);
+    response = await updateMenuItem({ data: formData, id });
+    toastNotify("Menu Item updated successfully", "success");
+  } else {
+    //create
+    response = await createMenuItem(formData);
+    toastNotify("Menu Item created successfully", "success");
+  }
+
   if (response) {
     setLoading(false);
     navigate("/menuItem/menuItemList");
@@ -109,7 +124,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   return (
     <div className="container border mt-5 p-5 bg-light">
       {loading && <MainLoader />}
-    <h3 className="px-2 text-success">Add Menu Item</h3>
+    <h3 className="px-2 text-success">{id ? "Edit Menu Item" : "Add Menu Item"}</h3>
     <form method="post" encType="multipart/form-data" onSubmit={handleSubmit}>
       <div className="row mt-3">
         <div className="col-md-7">
@@ -165,12 +180,12 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
                   type="submit"
                   className="btn btn-success form-control mt-3"
                 >
-                  Submit
+                  {id ? "Update" : "Create"}
                 </button>
               </div>
               <div className="col-6">
                 <a
-                  onClick={() => navigate(-1)}
+                  onClick={() => navigate("/menuItem/menuitemlist")}
                   className="btn btn-secondary form-control mt-3"
                 >
                   Back to Menu Items
