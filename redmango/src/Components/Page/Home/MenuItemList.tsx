@@ -18,9 +18,17 @@ function MenuItemList() {
 
   useEffect(() => {
     if (data && data.result) {
-      //handleFilters();
+      const tempMenuArray = handleFilters(searchValue);
+      setMenuItems(tempMenuArray);
     }
   },[searchValue]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      dispatch(setMenuItem(data.result)); //Once data is populated with the fetched response. The useEffect hook is triggered, and dispatch(setMenuItem(data.result)) stores the data in Redux.
+      setMenuItems(data.result)
+    }
+  }, [isLoading]);
 
   const handleFilters = (search: string) => {
     let tempMenuItems = [...data.result];
@@ -31,27 +39,17 @@ function MenuItemList() {
       tempMenuItems = tempSearchMenuItems.filter((item: menuItemModel) => item.name.toUpperCase().includes(search.toUpperCase()));
     }
     return tempMenuItems;
-  };
+  };  
 
-  
 
-  useEffect(() => {
-    if (!isLoading) {
-      dispatch(setMenuItem(data.result)); //Once data is populated with the fetched response. The useEffect hook is triggered, and dispatch(setMenuItem(data.result)) stores the data in Redux.
-    }
-  }, [isLoading]);
   if (isLoading) {
-    return (
-      <div>
-        <MainLoader />
-      </div>
-    );
+    return <MainLoader />;
   }
 
   return (
     <div className="container row">
-      {data.result.length > 0 &&
-        data.result.map((menuItem: menuItemModel, index: number) => (
+      {menuItems.length > 0 &&
+        menuItems.map((menuItem: menuItemModel, index: number) => (
           <MenuItemCard menuItem={menuItem} key={index} />
         ))}
     </div>
