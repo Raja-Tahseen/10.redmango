@@ -18,7 +18,7 @@ import {
   MenuItemUpsert,
 } from "../Pages";
 import { Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetShoppingCartQuery } from "../Apis/shoppingCartApi";
 import { setShoppingCart } from "../Storage/Redux/shoppingCartSlice";
@@ -30,11 +30,14 @@ import OrderConfirmed from "../Pages/Order/OrderConfirmed";
 
 function App() {
   const dispatch = useDispatch();
+  const [skip, setSkip] = useState(true);
   const userData: userModel = useSelector(
     (state: RootState) => state.userAuthStore
   );
 
-  const { data, isLoading } = useGetShoppingCartQuery(userData.id);
+  const { data, isLoading } = useGetShoppingCartQuery(userData.id, {
+    skip:skip,
+  });
 
   useEffect(() => {
     const localToken = localStorage.getItem("token");
@@ -45,12 +48,18 @@ function App() {
   }, []); //This useEffect should be executed whenever the app is rendered.
 
   useEffect(() => {
-    if (!isLoading) {
+    if (!isLoading && data) {
       //Means if the loading has been completed
       console.log(data.result);
       dispatch(setShoppingCart(data.result?.cartItems));
     }
   }, [data]); //trigger useEffect() when [data] toggles. Or we we can also trigger on "isLoading"
+
+  useEffect(() => {
+    if(userData.id)
+      setSkip(false);
+  },[userData]);
+
   return (
     <div>
       <Header />
