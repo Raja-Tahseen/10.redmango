@@ -13,10 +13,10 @@ function MenuItemList() {
   const [categoryList, setCategoryList] = useState([""]);
   const dispatch = useDispatch();
   const { data, isLoading } = useGetMenuItemsQuery(null); // Calls useGetMenuItemsQuery() to fetch the menu items. The data object contains the fetched results, and isLoading indicates the loading state.
-
   const searchValue = useSelector(
     (state:RootState) => state.menuItemStore.search
   );
+
 
   useEffect(() => {
     if (data && data.result) {
@@ -34,6 +34,7 @@ function MenuItemList() {
     }
   },[searchValue]);
 
+
   useEffect(() => {
     if (!isLoading) {
       dispatch(setMenuItem(data.result)); //Once data is populated with the fetched response. The useEffect hook is triggered, and dispatch(setMenuItem(data.result)) stores the data in Redux.
@@ -48,6 +49,7 @@ function MenuItemList() {
       setCategoryList(tempCategoryList);
     }
   }, [isLoading]);
+
 
   const handleCategoryClick = (i: number) => {
     const buttons = document.querySelectorAll(".custom-buttons");
@@ -68,6 +70,8 @@ function MenuItemList() {
       }
     });
   };
+
+
   const handleFilters = (category: string, search: string) => {
     let tempArray =
       category === "All"
@@ -89,6 +93,7 @@ function MenuItemList() {
   if (isLoading) {
     return <MainLoader />;
   }
+
 
   return (
     <div className="container row">
