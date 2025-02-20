@@ -51,7 +51,7 @@ function CartSummary() {
   };
 
   if (!shoppingCartFromStore || shoppingCartFromStore.length === 0) {
-    return <div>Shopping Cart Empty</div>;
+    return <div className="p-5">There are no items in your cart. Please add items to continue.</div>;
   }
 
   return (
