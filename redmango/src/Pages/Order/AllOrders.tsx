@@ -14,13 +14,25 @@ const filterOptions = [
   SD_Status.BEING_COOKED,
   SD_Status.READY_FOR_PICKUP,
   SD_Status.CANCELLED,
+  SD_Status.COMPLETED,
 ];
 
 function AllOrders() {
-  const { data, isLoading } = useGetAllOrdersQuery("");
+  //const { data, isLoading } = useGetAllOrdersQuery("");
+  
   const [orderData, setOrderData] = useState([]);
-  console.log(data);
   const [filters, setFilters] = useState({searchString: "", status: "" });
+  const [apiFilters, setApiFilters] = useState({
+    searchString: "",
+    status: "",
+  });
+
+  const { data, isLoading } = useGetAllOrdersQuery({
+    ...(apiFilters && {
+      searchString: apiFilters.searchString,
+      status: apiFilters.status,
+    }),
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -30,22 +42,27 @@ function AllOrders() {
   };
 
   const handleFilters = () => {
-    const tempData = data.result.filter((orderData: orderHeaderModel) => {
-      if (
-        (orderData.pickupName &&
-          orderData.pickupName.includes(filters.searchString)) ||
-        (orderData.pickupEmail &&
-          orderData.pickupEmail.includes(filters.searchString)) ||
-        (orderData.pickupPhoneNumber &&
-          orderData.pickupPhoneNumber.includes(filters.searchString))
-      ) {
-        return orderData;
-      }
+    // const tempData = data.result.filter((orderData: orderHeaderModel) => {
+    //   if (
+    //     (orderData.pickupName &&
+    //       orderData.pickupName.includes(filters.searchString)) ||
+    //     (orderData.pickupEmail &&
+    //       orderData.pickupEmail.includes(filters.searchString)) ||
+    //     (orderData.pickupPhoneNumber &&
+    //       orderData.pickupPhoneNumber.includes(filters.searchString))
+    //   ) {
+    //     return orderData;
+    //   }
+
+    setApiFilters({
+      searchString: filters.searchString,
+      status: filters.status,
     });
-    const finalArray = tempData.filter((orderData: orderHeaderModel) =>
-      filters.status !== "" ? orderData.status === filters.status : orderData
-    );
-    setOrderData(finalArray);
+
+    // const finalArray = tempData.filter((orderData: orderHeaderModel) =>
+    //   filters.status !== "" ? orderData.status === filters.status : orderData
+    // );
+    // setOrderData(finalArray);
   };
 
   useEffect(() => {

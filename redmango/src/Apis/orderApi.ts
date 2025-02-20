@@ -23,11 +23,14 @@ const orderApi = createApi({
             invalidatesTags: ["Orders"]
         }),
          getAllOrders: builder.query({
-            query: (userId) => ({
+            query: ({userId, searchString, status}) => ({
                 url: "order",
                 method: "GET",
                 params: {
                     userId: userId,
+                    ...(userId && { userId }),
+                    ...(searchString && { searchString }),
+                    ...(status && { status }),
                 },
             }),
             providesTags: ["Orders"],
